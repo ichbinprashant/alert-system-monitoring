@@ -62,7 +62,7 @@ The API monitors failed requests to `/api/submit`.
 
 - **Endpoint**: `POST /api/submit`
 - **Headers**:
-  - `Authorization: Bearer <JWT Token>`
+  - `Authorization: <JWT Token>`
 - **Sample Payload**:
   ```json
   {
