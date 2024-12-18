@@ -7,10 +7,10 @@ const { verifyToken } = require('../utils/jwtService');
 const ALERT_THRESHOLD = parseInt(process.env.ALERT_THRESHOLD) || 5;
 const ALERT_TIME_WINDOW = parseInt(process.env.ALERT_TIME_WINDOW) || 10; // minutes
 
-// In-memory object to track failed requests per IP
+// In-memory object to track failed requests
 const failedRequests = {};
 
-// Helper to clean up memory for expired IPs
+// clean up memory for expired IPs
 function cleanUpExpiredIPs(ip) {
     const currentTime = Date.now();
     if (failedRequests[ip] && (currentTime - failedRequests[ip].firstAttempt) > ALERT_TIME_WINDOW * 60 * 1000) {
@@ -39,14 +39,14 @@ router.post('/submit', async (req, res) => {
         // Increment failure count
         failedRequests[ip].count++;
 
-        // Log failure in MongoDB
+        // update log in MongoDB
         const logEntry = new FailedRequest({ ip, reason: 'Invalid or expired token' });
         await logEntry.save();
 
         // Trigger alert if threshold exceeded
         if (failedRequests[ip].count >= ALERT_THRESHOLD) {
             sendAlertEmail(ip, failedRequests[ip].count);
-            delete failedRequests[ip]; // Optionally reset tracking after alert
+            delete failedRequests[ip]; // resets tracking after alert
         }
 
         return res.status(401).json({ message: 'Unauthorized request', ip });

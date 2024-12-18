@@ -12,7 +12,7 @@ const sendAlertEmail = async (ip, failedCount) => {
 
     const mailOptions = {
         from: process.env.SMTP_EMAIL,
-        to: 'mishraprashant304@gmail.com', // Replace with real recipient email
+        to: 'mishraprashant304@gmail.com', // Replace with recipient's email
         subject: 'Alert: Excessive Failed Requests',
         text: `IP Address ${ip} has failed ${failedCount} requests in a short period.`,
     };

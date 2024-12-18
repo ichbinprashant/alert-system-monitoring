@@ -1,6 +1,1 @@
-const redis = require('redis');
-
-const redisClient = redis.createClient();
-redisClient.on('error', (err) => console.log('Redis Error:', err));
-
-module.exports = redisClient;
+// redis could be implemented for future scaling of application to handle multiple requests
